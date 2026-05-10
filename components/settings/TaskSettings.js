@@ -18,7 +18,9 @@ import {
   InputLabel,
   MenuItem,
   Chip,
-  FormHelperText
+  FormHelperText,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -426,6 +428,102 @@ export default function TaskSettings({ projectId }) {
                 onChange={handleSettingChange}
                 type="number"
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="mineru-model-version-label">{t('settings.minerUModelVersion')}</InputLabel>
+                <Select
+                  labelId="mineru-model-version-label"
+                  value={taskSettings.minerUModelVersion || 'vlm'}
+                  label={t('settings.minerUModelVersion')}
+                  name="minerUModelVersion"
+                  onChange={handleSettingChange}
+                >
+                  <MenuItem value="vlm">
+                    <Box>
+                      <Typography variant="subtitle2">VLM</Typography>
+                      <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary' }}>
+                        {t('settings.minerUModelVersionVlmDesc')}
+                      </Typography>
+                    </Box>
+                  </MenuItem>
+                  <MenuItem value="pipeline">
+                    <Box>
+                      <Typography variant="subtitle2">Pipeline</Typography>
+                      <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary' }}>
+                        {t('settings.minerUModelVersionPipelineDesc')}
+                      </Typography>
+                    </Box>
+                  </MenuItem>
+                </Select>
+                <FormHelperText>{t('settings.minerUModelVersionHelper')}</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="mineru-language-label">{t('settings.minerULanguage')}</InputLabel>
+                <Select
+                  labelId="mineru-language-label"
+                  value={taskSettings.minerULanguage || 'ch'}
+                  label={t('settings.minerULanguage')}
+                  name="minerULanguage"
+                  onChange={handleSettingChange}
+                >
+                  <MenuItem value="ch">中文 (ch)</MenuItem>
+                  <MenuItem value="en">English (en)</MenuItem>
+                  <MenuItem value="japan">日本語 (japan)</MenuItem>
+                  <MenuItem value="korean">한국어 (korean)</MenuItem>
+                  <MenuItem value="auto">Auto</MenuItem>
+                </Select>
+                <FormHelperText>{t('settings.minerULanguageHelper')}</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label={t('settings.minerUMaxPollAttempts')}
+                name="minerUMaxPollAttempts"
+                value={taskSettings.minerUMaxPollAttempts ?? ''}
+                onChange={handleSettingChange}
+                type="number"
+                inputProps={{ min: 1 }}
+                helperText={t('settings.minerUMaxPollAttemptsHelper')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={taskSettings.minerUEnableOcr !== false}
+                      onChange={e => setTaskSettings(prev => ({ ...prev, minerUEnableOcr: e.target.checked }))}
+                      name="minerUEnableOcr"
+                    />
+                  }
+                  label={t('settings.minerUEnableOcr')}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={taskSettings.minerUEnableFormula !== false}
+                      onChange={e => setTaskSettings(prev => ({ ...prev, minerUEnableFormula: e.target.checked }))}
+                      name="minerUEnableFormula"
+                    />
+                  }
+                  label={t('settings.minerUEnableFormula')}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={taskSettings.minerUEnableTable !== false}
+                      onChange={e => setTaskSettings(prev => ({ ...prev, minerUEnableTable: e.target.checked }))}
+                      name="minerUEnableTable"
+                    />
+                  }
+                  label={t('settings.minerUEnableTable')}
+                />
+              </Box>
+              <FormHelperText>{t('settings.minerUEnableOcrHelper')}</FormHelperText>
             </Grid>
           </Grid>
         </CardContent>
